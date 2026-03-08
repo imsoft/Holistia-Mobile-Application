@@ -1,0 +1,35 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    missing_return: error
+    dead_code: warning
+    unused_import: warning
+    unused_local_variable: warning
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+
+linter:
+  rules:
+    # Performance
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+
+    # Safety
+    - cancel_subscriptions
+    - close_sinks
+    - unawaited_futures
+    - avoid_print
+    - prefer_final_fields
+    - prefer_final_locals
+
+    # Style
+    - prefer_single_quotes
+    - sort_child_properties_last
+    - sized_box_for_whitespace
+    - use_super_parameters
+    - unnecessary_this
+    - avoid_redundant_argument_values

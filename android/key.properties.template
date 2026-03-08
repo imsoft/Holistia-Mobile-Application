@@ -1,0 +1,16 @@
+# Plantilla para firma de release de Android.
+# INSTRUCCIONES:
+# 1. Genera tu keystore ejecutando este comando en la raíz del proyecto:
+#    keytool -genkey -v -keystore android/holistia-release.jks \
+#      -keyalg RSA -keysize 2048 -validity 10000 \
+#      -alias holistia \
+#      -dname "CN=Holistia, OU=Mobile, O=Holistia, L=TuCiudad, ST=TuEstado, C=MX"
+#
+# 2. Copia este archivo como android/key.properties (sin .template)
+# 3. Rellena los valores con los que usaste en el comando de keytool
+# 4. NUNCA subas key.properties ni el archivo .jks a git
+
+storePassword=TU_CONTRASEÑA_DEL_KEYSTORE
+keyPassword=TU_CONTRASEÑA_DE_LA_CLAVE
+keyAlias=holistia
+storeFile=holistia-release.jks
