@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/app_date_utils.dart';
+import '../../core/user_facing_errors.dart';
 import '../../core/challenge_categories.dart';
 import '../../core/challenge_icons.dart';
 import '../../core/share_service.dart';
@@ -108,11 +109,28 @@ class _FeedScreenState extends State<FeedScreen> {
           _hasMore = posts.length == _pageSize;
           _loading = false;
         });
+        final postId = GoRouter.of(context).routerDelegate.currentConfiguration.uri.queryParameters['postId'];
+        if (postId != null && posts.isNotEmpty) {
+          Post? target;
+          for (final p in posts) {
+            if (p.id == postId) {
+              target = p;
+              break;
+            }
+          }
+          if (target != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              _openPostDetail(target!);
+              context.go('/feed');
+            });
+          }
+        }
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
@@ -228,7 +246,7 @@ class _FeedScreenState extends State<FeedScreen> {
           }
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -246,7 +264,7 @@ class _FeedScreenState extends State<FeedScreen> {
           context.push('/user/$userId');
         },
       ),
-    ).then((_) => _load());
+    );
   }
 
   @override

@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
-      if (mounted) context.go('/home');
+      if (mounted) context.go('/feed');
     } on AuthException catch (e) {
       if (mounted) {
         setState(() {

@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/challenge_icons.dart';
+import '../../core/user_facing_errors.dart';
 import '../../core/local_notification_service.dart';
 import '../../core/streak_calculator.dart';
 import '../../models/challenge.dart';
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
@@ -159,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (mounted) {
         setState(() => _checkingIn.remove(challengeId));
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -176,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.explore_outlined),
-            tooltip: 'Explorar lugares',
+            tooltip: 'Lugares',
             onPressed: () => context.push('/professionals'),
           ),
         ],

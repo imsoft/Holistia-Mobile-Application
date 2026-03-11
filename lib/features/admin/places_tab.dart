@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/user_facing_errors.dart';
 import '../../models/place.dart';
 import '../../repositories/place_repository.dart';
 import '../../widgets/error_retry.dart';
@@ -38,7 +39,7 @@ class _PlacesTabState extends State<PlacesTab>
       final list = await _repo.getAll(type: _filter);
       if (mounted) setState(() => _places = list);
     } catch (e) {
-      if (mounted) setState(() => _error = e.toString());
+      if (mounted) setState(() => _error = userFacingErrorMessage(e));
     }
   }
 
@@ -73,7 +74,7 @@ class _PlacesTabState extends State<PlacesTab>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }

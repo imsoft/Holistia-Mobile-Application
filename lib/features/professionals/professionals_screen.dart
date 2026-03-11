@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/user_facing_errors.dart';
 import '../../models/place.dart';
 import '../../repositories/place_repository.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/empty_state.dart';
 import '../../widgets/error_retry.dart';
+import '../../widgets/skeleton.dart';
 
 class ProfessionalsScreen extends StatefulWidget {
   const ProfessionalsScreen({super.key});
@@ -43,7 +45,7 @@ class _ProfessionalsScreenState extends State<ProfessionalsScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
@@ -78,9 +80,9 @@ class _ProfessionalsScreenState extends State<ProfessionalsScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Explorar')),
+      appBar: AppBar(title: const Text('Lugares')),
       body: _loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const SkeletonPlaceList()
           : _error != null
               ? ErrorRetry(message: _error!, onRetry: _load)
               : Column(

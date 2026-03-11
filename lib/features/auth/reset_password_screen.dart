@@ -38,7 +38,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       await Supabase.instance.client.auth.updateUser(
         UserAttributes(password: _passwordController.text),
       );
-      if (mounted) context.go('/home');
+      if (mounted) context.go('/feed');
     } on AuthException catch (e) {
       if (mounted) {
         setState(() {
@@ -62,6 +62,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/login'),
+        ),
+      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -175,7 +181,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             await Supabase.instance.client.auth.signOut();
                             router.go('/login');
                           },
-                          child: const Text('Cancelar e ir a iniciar sesión'),
+                          child: const Text('Volver a iniciar sesión'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            'Cerrarás la sesión actual.',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: theme?.mutedForeground,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ],
                     ),

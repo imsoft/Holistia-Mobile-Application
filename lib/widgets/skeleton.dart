@@ -344,3 +344,113 @@ class SkeletonNotificationsList extends StatelessWidget {
     );
   }
 }
+
+/// Lista de lugares (skeleton para ProfessionalsScreen).
+class SkeletonPlaceList extends StatelessWidget {
+  const SkeletonPlaceList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<AppThemeExtension>();
+
+    return ShimmerSkeleton(
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: 4,
+        itemBuilder: (context, i) => Card(
+          margin: const EdgeInsets.only(bottom: 12),
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(theme?.radiusLg ?? 12),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Skeleton(height: 160, width: double.infinity, borderRadius: null),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Skeleton(height: 20, width: 160, borderRadius: BorderRadius.circular(4)),
+                        ),
+                        const SizedBox(width: 8),
+                        Skeleton(height: 24, width: 70, borderRadius: BorderRadius.circular(12)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Skeleton(height: 14, width: double.infinity, borderRadius: BorderRadius.circular(4)),
+                    const SizedBox(height: 4),
+                    Skeleton(height: 14, width: 120, borderRadius: BorderRadius.circular(4)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Contenido de perfil de usuario en carga (skeleton para UserProfileScreen).
+class SkeletonUserProfile extends StatelessWidget {
+  const SkeletonUserProfile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<AppThemeExtension>();
+
+    return ShimmerSkeleton(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const Skeleton(width: 88, height: 88, borderRadius: BorderRadius.all(Radius.circular(44))),
+            const SizedBox(height: 12),
+            Skeleton(height: 24, width: 140, borderRadius: BorderRadius.circular(4)),
+            const SizedBox(height: 8),
+            Skeleton(height: 18, width: 100, borderRadius: BorderRadius.circular(4)),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Skeleton(height: 36, width: 60, borderRadius: BorderRadius.circular(4)),
+                const SizedBox(width: 24),
+                Skeleton(height: 36, width: 60, borderRadius: BorderRadius.circular(4)),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Skeleton(height: 16, width: 120, borderRadius: BorderRadius.circular(4)),
+            const SizedBox(height: 12),
+            ...List.generate(3, (_) => Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Card(
+                margin: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(theme?.radiusLg ?? 8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Skeleton(height: 14, width: 80, borderRadius: BorderRadius.circular(4)),
+                      const SizedBox(height: 12),
+                      Skeleton(height: 120, width: double.infinity, borderRadius: BorderRadius.circular(8)),
+                      const SizedBox(height: 12),
+                      Skeleton(height: 14, width: double.infinity, borderRadius: BorderRadius.circular(4)),
+                    ],
+                  ),
+                ),
+              ),
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+}

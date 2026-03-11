@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../core/user_facing_errors.dart';
 import '../../models/place.dart';
 import '../../repositories/place_repository.dart';
 
@@ -65,7 +66,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
         });
       }
     } catch (e) {
-      if (mounted) setState(() => _error = e.toString());
+      if (mounted) setState(() => _error = userFacingErrorMessage(e));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -214,7 +215,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }

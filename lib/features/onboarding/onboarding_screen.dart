@@ -142,19 +142,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Text(_page < _pages.length - 1 ? 'Siguiente' : 'Comenzar'),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  TextButton(
-                    onPressed: _page < _pages.length - 1
-                        ? () {
-                            _pageController.animateToPage(
-                              _pages.length - 1,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          }
-                        : _finish,
-                    child: Text(_page < _pages.length - 1 ? 'Omitir' : 'Listo'),
-                  ),
+                  if (_page < _pages.length - 1) ...[
+                    const SizedBox(height: 12),
+                    TextButton(
+                      onPressed: () {
+                        _pageController.animateToPage(
+                          _pages.length - 1,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: const Text('Omitir'),
+                    ),
+                  ],
                 ],
               ),
             ),

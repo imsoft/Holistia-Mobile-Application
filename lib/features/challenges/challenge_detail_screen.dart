@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../core/app_date_utils.dart';
+import '../../core/user_facing_errors.dart';
 import '../../core/challenge_icons.dart';
 import '../../core/zenit_level.dart';
 import '../../models/challenge.dart';
@@ -78,7 +79,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
@@ -181,7 +182,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -206,11 +207,19 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
   }
 
   Future<_CheckInFormResult?> _showCheckInForm() async {
-    return Navigator.of(context).push<_CheckInFormResult>(
-      MaterialPageRoute(
-        builder: (context) => _CheckInFormScreen(
+    return showModalBottomSheet<_CheckInFormResult>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.75,
+        minChildSize: 0.4,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) => _CheckInFormScreen(
           challenge: _challenge!,
           theme: Theme.of(context).extension<AppThemeExtension>(),
+          scrollController: scrollController,
         ),
       ),
     );
@@ -249,7 +258,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error al eliminar: $e')),
+            SnackBar(content: Text(userFacingErrorMessage(e))),
           );
         }
       }
@@ -819,9 +828,11 @@ class _CheckInFormScreen extends StatefulWidget {
   const _CheckInFormScreen({
     required this.challenge,
     this.theme,
+    this.scrollController,
   });
   final Challenge challenge;
   final AppThemeExtension? theme;
+  final ScrollController? scrollController;
 
   @override
   State<_CheckInFormScreen> createState() => _CheckInFormScreenState();
@@ -868,20 +879,13 @@ class _CheckInFormScreenState extends State<_CheckInFormScreen> {
         widget.theme ?? Theme.of(context).extension<AppThemeExtension>();
     final c = widget.challenge;
     final needsValue = c.type == ChallengeType.countUnits;
+    final isSheet = widget.scrollController != null;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registrar avance'),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-      body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            padding: const EdgeInsets.all(24),
+    final formContent = Form(
+      key: _formKey,
+      child: ListView(
+        controller: widget.scrollController,
+        padding: const EdgeInsets.all(24),
             children: [
               // ── Cantidad ─────────────────────────────────────────────────
               TextFormField(
@@ -1021,8 +1025,45 @@ class _CheckInFormScreenState extends State<_CheckInFormScreen> {
               ),
             ],
           ),
+        );
+
+    if (isSheet) {
+      return Material(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+              child: Row(
+                children: [
+                  Text(
+                    'Registrar avance',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: formContent),
+          ],
+        ),
+      );
+    }
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Registrar avance'),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
+      body: SafeArea(child: formContent),
     );
   }
 
@@ -1199,7 +1240,7 @@ class _InviteSheetState extends State<_InviteSheet> {
         });
       }
     } catch (e) {
-      if (mounted) setState(() => _error = e.toString());
+      if (mounted) setState(() => _error = userFacingErrorMessage(e));
     }
   }
 
@@ -1213,7 +1254,7 @@ class _InviteSheetState extends State<_InviteSheet> {
       if (mounted) {
         setState(() => _invitedIds = Set.from(_invitedIds)..remove(userId));
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+            .showSnackBar(SnackBar(content: Text(userFacingErrorMessage(e))));
       }
     }
   }

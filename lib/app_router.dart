@@ -19,6 +19,7 @@ import 'features/home/main_shell.dart';
 import 'features/home/home_screen.dart';
 import 'features/notifications/notifications_screen.dart';
 import 'features/profile/user_profile_screen.dart';
+import 'features/settings/edit_profile_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/achievements/achievements_screen.dart';
 import 'features/life_wheel/life_wheel_survey_screen.dart';
@@ -174,6 +175,10 @@ GoRouter createAppRouter(HolistiaAuthState authState) {
       GoRoute(
         path: '/notifications',
         pageBuilder: (context, state) => _fadePage(state, const NotificationsScreen()),
+      ),
+      GoRoute(
+        path: '/settings/edit-profile',
+        pageBuilder: (context, state) => _fadePage(state, const EditProfileScreen()),
       ),
       GoRoute(
         path: '/user/:userId',

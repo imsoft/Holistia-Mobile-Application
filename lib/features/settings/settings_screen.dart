@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/app_constants.dart';
 import '../../core/local_notification_service.dart';
+import '../../core/user_facing_errors.dart';
 import '../../core/profile_options.dart';
 import '../../core/zenit_level.dart';
 import '../../models/expert_request.dart';
@@ -100,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
@@ -120,7 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         setState(() => _isPublic = !value);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -141,7 +142,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         setState(() => _sex = prev);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -161,7 +162,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         setState(() => _birthDate = prev);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -181,7 +182,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -299,7 +300,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al eliminar cuenta: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -309,9 +310,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<AppThemeExtension>();
 
+    final uid = Supabase.instance.client.auth.currentUser?.id;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil'),
+        title: const Text('Ajustes'),
       ),
       body: _loading
           ? const SkeletonSettingsList()
@@ -403,6 +406,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const SizedBox(height: 16),
                     _ZenitCard(balance: _zenitBalance, theme: theme),
+                    if (uid != null && uid.isNotEmpty) ...[
+                      const SizedBox(height: 16),
+                      OutlinedButton.icon(
+                        onPressed: () => context.push('/user/$uid'),
+                        icon: const Icon(Icons.person_outline, size: 20),
+                        label: const Text('Ver mi perfil público'),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 24),
                     Card(
                       shape: RoundedRectangleBorder(
@@ -410,6 +424,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       child: Column(
                         children: [
+                          ListTile(
+                            leading: const Icon(Icons.edit_outlined),
+                            title: const Text('Editar perfil completo'),
+                            subtitle: const Text('Nombre, usuario, sexo, fecha de nacimiento'),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () => context.push('/settings/edit-profile').then((_) => _load()),
+                          ),
+                          const Divider(height: 1),
                           ListTile(
                             leading: const Icon(Icons.photo_camera_outlined),
                             title: const Text('Cambiar foto de perfil'),
@@ -796,7 +818,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+            .showSnackBar(SnackBar(content: Text(userFacingErrorMessage(e))));
       }
     }
   }
@@ -857,7 +879,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         setState(() => _uploadingAvatar = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -976,7 +998,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         setState(() => _username = previous);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }

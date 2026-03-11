@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/app_date_utils.dart';
+import '../../core/user_facing_errors.dart';
 import '../../core/challenge_icons.dart';
 import '../../core/share_service.dart';
 import '../../widgets/image_carousel.dart';
@@ -77,7 +78,7 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
     } catch (e) {
       if (mounted) {
         setState(() => _sendingComment = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(userFacingErrorMessage(e))));
       }
     }
   }

@@ -24,10 +24,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
   final _usernameController = TextEditingController();
+  final _usernameFocusNode = FocusNode();
   bool _loading = false;
   bool _loadingGoogle = false;
   bool _obscurePassword = true;
   String? _error;
+  String? _usernameAvailability; // 'available' | 'taken' | 'checking' | null
+  String get _passwordStrength {
+    final p = _passwordController.text;
+    if (p.isEmpty) return '';
+    if (p.length < 6) return 'Corta (mín. 6)';
+    if (p.length >= 12 && (p.contains(RegExp(r'[0-9]')) || p.contains(RegExp(r'[^a-zA-Z0-9]')))) return 'Fuerte';
+    if (p.length >= 8) return 'Aceptable';
+    return 'Débil';
+  }
 
   static String? _validateUsername(String? v) {
     if (v == null || v.trim().isEmpty) return 'Elige un nombre de usuario';
@@ -40,13 +50,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return null;
   }
 
+  void _onPasswordChanged() => setState(() {});
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(_onPasswordChanged);
+    _usernameFocusNode.addListener(_checkUsernameOnBlur);
+  }
+
   @override
   void dispose() {
+    _passwordController.removeListener(_onPasswordChanged);
+    _usernameFocusNode.removeListener(_checkUsernameOnBlur);
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
     _usernameController.dispose();
+    _usernameFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkUsernameOnBlur() async {
+    if (_usernameFocusNode.hasFocus) return;
+    final v = _usernameController.text.trim().toLowerCase();
+    if (v.isEmpty || v.length < AppConstants.usernameMinLength || !AppConstants.usernameRegex.hasMatch(v)) {
+      if (mounted) setState(() => _usernameAvailability = null);
+      return;
+    }
+    if (mounted) setState(() => _usernameAvailability = 'checking');
+    try {
+      final available = await ProfileRepository().checkUsernameAvailableRpc(v);
+      if (mounted) setState(() => _usernameAvailability = available ? 'available' : 'taken');
+    } catch (_) {
+      if (mounted) setState(() => _usernameAvailability = null);
+    }
   }
 
   Future<void> _submit() async {
@@ -190,12 +228,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _usernameController,
+                  focusNode: _usernameFocusNode,
                   autocorrect: false,
                   textCapitalization: TextCapitalization.none,
                   decoration: InputDecoration(
                     labelText: 'Nombre de usuario',
                     hintText: 'ej. maria_holistia',
-                    helperText: '3-30 caracteres: letras, números y _',
+                    helperText: _usernameAvailability == null
+                        ? '3-30 caracteres: letras, números y _'
+                        : _usernameAvailability == 'checking'
+                            ? 'Comprobando...'
+                            : _usernameAvailability == 'available'
+                                ? 'Disponible'
+                                : 'En uso',
+                    helperStyle: TextStyle(
+                      color: _usernameAvailability == 'available'
+                          ? Colors.green
+                          : _usernameAvailability == 'taken'
+                              ? colorScheme.error
+                              : theme?.mutedForeground,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(theme?.radiusMd ?? 8),
                     ),
@@ -240,6 +292,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
+                if (_passwordStrength.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    _passwordStrength,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: _passwordStrength.startsWith('Fuerte')
+                              ? Colors.green
+                              : _passwordStrength.startsWith('Aceptable')
+                                  ? Colors.orange
+                                  : theme?.mutedForeground,
+                        ),
+                  ),
+                ],
                 if (_error != null) ...[
                   const SizedBox(height: 16),
                   Text(

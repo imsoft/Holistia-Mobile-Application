@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/onboarding_storage.dart';
+import '../../core/user_facing_errors.dart';
 import '../../models/life_aspect.dart';
 import '../../repositories/life_assessment_repository.dart';
 import '../../theme/app_theme.dart';
@@ -73,7 +74,7 @@ class _LifeWheelSurveyScreenState extends State<LifeWheelSurveyScreen> {
       if (mounted) {
         setState(() => _saving = false);
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+            .showSnackBar(SnackBar(content: Text(userFacingErrorMessage(e))));
       }
     }
   }

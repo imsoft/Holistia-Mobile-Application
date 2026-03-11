@@ -102,20 +102,12 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
             label: 'Descubrir',
           ),
           NavigationDestination(
-            icon: _NotifBadge(count: _unreadCount, child: const Icon(Icons.person_outline)),
-            selectedIcon: _NotifBadge(count: _unreadCount, child: const Icon(Icons.person)),
-            label: 'Perfil',
+            icon: _NotifBadge(count: _unreadCount, child: const Icon(Icons.settings_outlined)),
+            selectedIcon: _NotifBadge(count: _unreadCount, child: const Icon(Icons.settings)),
+            label: 'Ajustes',
           ),
         ],
       ),
-      floatingActionButton: _unreadCount > 0
-          ? FloatingActionButton.small(
-              onPressed: () {
-                context.push('/notifications').then((_) => _loadUnreadCount());
-              },
-              child: _NotifBadge(count: _unreadCount, child: const Icon(Icons.notifications)),
-            )
-          : null,
     );
   }
 }

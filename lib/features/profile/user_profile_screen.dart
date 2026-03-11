@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/challenge_icons.dart';
 import '../../core/share_service.dart';
+import '../../core/user_facing_errors.dart';
 import '../../core/zenit_level.dart';
 import '../../models/post.dart';
 import '../../models/profile.dart';
@@ -11,7 +12,10 @@ import '../../repositories/post_repository.dart';
 import '../../repositories/profile_repository.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/challenge_badges.dart';
+import '../../widgets/empty_state.dart';
+import '../../widgets/error_retry.dart';
 import '../../widgets/expert_badge.dart';
+import '../../widgets/skeleton.dart';
 import '../feed/post_detail_sheet.dart';
 
 /// Perfil público de un usuario: publicaciones, seguidores, siguiendo y botón Seguir.
@@ -71,7 +75,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
@@ -123,41 +127,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final isMe = _myUserId == widget.userId;
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: _loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const SkeletonUserProfile()
           : _error != null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(_error!, textAlign: TextAlign.center),
-                        const SizedBox(height: 16),
-                        FilledButton(onPressed: _load, child: const Text('Reintentar')),
-                      ],
-                    ),
-                  ),
-                )
+              ? ErrorRetry(message: _error!, onRetry: _load)
               : RefreshIndicator(
                   onRefresh: _load,
                   child: CustomScrollView(
                     slivers: [
-                      SliverToBoxAdapter(
-                        child: SafeArea(
-                          bottom: false,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8, left: 8),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: IconButton(
-                                icon: const Icon(Icons.arrow_back),
-                                onPressed: () => Navigator.of(context).pop(),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.all(20),
@@ -257,16 +240,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       _posts.isEmpty
                           ? SliverFillRemaining(
                               hasScrollBody: false,
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(24),
-                                  child: Text(
-                                    'Aún no hay publicaciones',
-                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                          color: theme?.mutedForeground,
-                                        ),
-                                  ),
-                                ),
+                              child: EmptyState(
+                                icon: Icons.article_outlined,
+                                title: 'Aún no hay publicaciones',
+                                subtitle: 'Cuando publique avances de sus retos, aparecerán aquí.',
                               ),
                             )
                           : SliverList(

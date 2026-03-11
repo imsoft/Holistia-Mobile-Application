@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/app_date_utils.dart';
+import '../../core/user_facing_errors.dart';
 import '../../models/notification.dart';
 import '../../repositories/challenge_invitation_repository.dart';
 import '../../repositories/notification_repository.dart';
@@ -53,7 +54,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
@@ -80,7 +81,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           _respondedInvitations.remove(challengeId);
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(userFacingErrorMessage(e))),
         );
       }
     }
@@ -125,8 +126,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   void _handleNotificationTap(AppNotification notification) {
     _markAsRead(notification);
     if (notification.relatedPostId != null) {
-      context.push('/feed');
-      // Podrías navegar al post específico si tienes una ruta
+      context.push('/feed?postId=${notification.relatedPostId}');
     } else if (notification.relatedChallengeId != null) {
       context.push('/challenges/${notification.relatedChallengeId}');
     }
@@ -275,7 +275,7 @@ class _NotificationTile extends StatelessWidget {
     final typeColor = getColor(notification.type, colorScheme);
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      color: notification.isRead ? null : theme?.muted?.withValues(alpha: 0.3),
+      color: notification.isRead ? null : theme?.muted.withValues(alpha: 0.3),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),

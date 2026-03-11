@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/app_date_utils.dart';
+import '../../core/user_facing_errors.dart';
 import '../../models/challenge.dart';
 import '../../models/profile.dart';
 import '../../repositories/admin_repository.dart';
@@ -81,7 +82,7 @@ class _ExpertRequestsTabState extends State<_ExpertRequestsTab>
       final list = await _adminRepo.getPendingRequests();
       if (mounted) setState(() => _requests = list);
     } catch (e) {
-      if (mounted) setState(() => _error = e.toString());
+      if (mounted) setState(() => _error = userFacingErrorMessage(e));
     }
   }
 
@@ -103,7 +104,7 @@ class _ExpertRequestsTabState extends State<_ExpertRequestsTab>
       if (mounted) {
         setState(() => _requests = [..._requests!, item]);
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+            .showSnackBar(SnackBar(content: Text(userFacingErrorMessage(e))));
       }
     }
   }
@@ -316,7 +317,7 @@ class _UsersTabState extends State<_UsersTab>
       final list = await _adminRepo.getAllUsers();
       if (mounted) setState(() => _users = list);
     } catch (e) {
-      if (mounted) setState(() => _error = e.toString());
+      if (mounted) setState(() => _error = userFacingErrorMessage(e));
     }
   }
 
@@ -438,7 +439,7 @@ class _FeaturedChallengesTabState extends State<_FeaturedChallengesTab>
       final list = await _repo.getAllPublicChallenges();
       if (mounted) setState(() => _challenges = list);
     } catch (e) {
-      if (mounted) setState(() => _error = e.toString());
+      if (mounted) setState(() => _error = userFacingErrorMessage(e));
     }
   }
 
@@ -451,7 +452,7 @@ class _FeaturedChallengesTabState extends State<_FeaturedChallengesTab>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error: $e')));
+            .showSnackBar(SnackBar(content: Text(userFacingErrorMessage(e))));
       }
     } finally {
       if (mounted) setState(() => _toggling.remove(c.id));

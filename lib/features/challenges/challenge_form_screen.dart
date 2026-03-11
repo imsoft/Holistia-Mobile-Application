@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/challenge_categories.dart';
+import '../../core/user_facing_errors.dart';
 import '../../core/challenge_icons.dart';
 import '../../core/challenge_templates.dart';
 import '../../core/challenge_units.dart';
@@ -214,7 +215,7 @@ class _ChallengeFormScreenState extends State<ChallengeFormScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }

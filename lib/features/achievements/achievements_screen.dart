@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/user_facing_errors.dart';
 import '../../core/zenit_level.dart';
 import '../../repositories/profile_repository.dart';
 import '../../theme/app_colors.dart';
@@ -41,7 +42,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
     } catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.toString();
+          _error = userFacingErrorMessage(e);
           _loading = false;
         });
       }
