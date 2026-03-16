@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/app_constants.dart';
+import '../../core/apple_auth_service.dart';
 import '../../core/auth_error_localized.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/apple_sign_in_button.dart';
 import '../../widgets/google_sign_in_button.dart';
 import '../../widgets/holistia_logo.dart';
 
@@ -21,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _loading = false;
   bool _loadingGoogle = false;
+  bool _loadingApple = false;
   bool _obscurePassword = true;
   String? _error;
 
@@ -87,6 +90,26 @@ class _LoginScreenState extends State<LoginScreen> {
           _loadingGoogle = false;
         });
       }
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    setState(() {
+      _error = null;
+      _loadingApple = true;
+    });
+    final result = await AppleAuthService().signInWithApple();
+    if (!mounted) return;
+    setState(() => _loadingApple = false);
+    switch (result) {
+      case AppleSignInSuccess():
+        context.go('/feed');
+        break;
+      case AppleSignInCancelled():
+        break;
+      case AppleSignInFailure(:final message):
+        setState(() => _error = message);
+        break;
     }
   }
 
@@ -228,6 +251,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _signInWithGoogle,
                   loading: _loadingGoogle,
                 ),
+                if (AppleSignInButton.isSupported) ...[
+                  const SizedBox(height: 16),
+                  AppleSignInButton(
+                    onPressed: _signInWithApple,
+                    loading: _loadingApple,
+                  ),
+                ],
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () => context.push('/register'),

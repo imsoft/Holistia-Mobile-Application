@@ -5,9 +5,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/app_constants.dart';
+import '../../core/apple_auth_service.dart';
 import '../../core/auth_error_localized.dart';
 import '../../repositories/profile_repository.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/apple_sign_in_button.dart';
 import '../../widgets/google_sign_in_button.dart';
 import '../../widgets/holistia_logo.dart';
 
@@ -27,6 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _usernameFocusNode = FocusNode();
   bool _loading = false;
   bool _loadingGoogle = false;
+  bool _loadingApple = false;
   bool _obscurePassword = true;
   String? _error;
   String? _usernameAvailability; // 'available' | 'taken' | 'checking' | null
@@ -154,6 +157,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _loadingGoogle = false;
         });
       }
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    setState(() {
+      _error = null;
+      _loadingApple = true;
+    });
+    final result = await AppleAuthService().signInWithApple();
+    if (!mounted) return;
+    setState(() => _loadingApple = false);
+    switch (result) {
+      case AppleSignInSuccess():
+        context.go('/feed');
+        break;
+      case AppleSignInCancelled():
+        break;
+      case AppleSignInFailure(:final message):
+        setState(() => _error = message);
+        break;
     }
   }
 
@@ -333,6 +356,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onPressed: _signInWithGoogle,
                   loading: _loadingGoogle,
                 ),
+                if (AppleSignInButton.isSupported) ...[
+                  const SizedBox(height: 16),
+                  AppleSignInButton(
+                    onPressed: _signInWithApple,
+                    loading: _loadingApple,
+                  ),
+                ],
                 const SizedBox(height: 24),
                 FilledButton(
                   onPressed: _loading
