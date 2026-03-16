@@ -15,7 +15,7 @@ class AdminRepository {
   Future<List<ExpertRequestWithProfile>> getPendingRequests() async {
     final requestRows = await _client
         .from('expert_requests')
-        .select('*')
+        .select()
         .eq('status', 'pending')
         .order('created_at', ascending: true) as List<dynamic>;
 

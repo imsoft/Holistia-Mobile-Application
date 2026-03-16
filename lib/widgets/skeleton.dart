@@ -366,7 +366,7 @@ class SkeletonPlaceList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Skeleton(height: 160, width: double.infinity, borderRadius: null),
+              const Skeleton(height: 160, width: double.infinity),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(

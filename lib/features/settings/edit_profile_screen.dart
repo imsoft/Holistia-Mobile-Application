@@ -225,7 +225,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             TextFormField(
               controller: _usernameController,
               autocorrect: false,
-              textCapitalization: TextCapitalization.none,
               decoration: InputDecoration(
                 labelText: 'Nombre de usuario',
                 hintText: 'ej. maria_holistia',

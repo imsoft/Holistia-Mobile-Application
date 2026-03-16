@@ -218,7 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 24),
-                const Center(child: HolistiaLogo(width: 120)),
+                const Center(child: HolistiaLogo()),
                 const SizedBox(height: 24),
                 Text(
                   'Crear cuenta',
@@ -253,7 +253,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _usernameController,
                   focusNode: _usernameFocusNode,
                   autocorrect: false,
-                  textCapitalization: TextCapitalization.none,
                   decoration: InputDecoration(
                     labelText: 'Nombre de usuario',
                     hintText: 'ej. maria_holistia',

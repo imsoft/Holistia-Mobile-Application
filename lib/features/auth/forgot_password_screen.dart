@@ -90,7 +90,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(height: 24),
-                        const Center(child: HolistiaLogo(width: 120)),
+                        const Center(child: HolistiaLogo()),
                         const SizedBox(height: 24),
                         Text(
                           '¿Olvidaste tu contraseña?',

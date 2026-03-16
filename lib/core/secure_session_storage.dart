@@ -14,7 +14,7 @@ class SecureSessionStorage extends LocalStorage {
     encryptedSharedPreferences: true,
   );
 
-  late final FlutterSecureStorage _storage = FlutterSecureStorage(
+  final FlutterSecureStorage _storage = const FlutterSecureStorage(
     aOptions: _androidOptions,
   );
 

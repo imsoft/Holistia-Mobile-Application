@@ -83,15 +83,15 @@ class PlaceRepository {
     final data = <String, dynamic>{
       'type': type.value,
       'name': name,
-      if (description != null) 'description': description,
-      if (address != null) 'address': address,
-      if (phone != null) 'phone': phone,
-      if (imageUrl != null) 'image_url': imageUrl,
+      'description': ?description,
+      'address': ?address,
+      'phone': ?phone,
+      'image_url': ?imageUrl,
       if (eventDate != null) 'event_date': eventDate.toIso8601String(),
-      if (website != null) 'website': website,
-      if (instagram != null) 'instagram': instagram,
-      if (facebook != null) 'facebook': facebook,
-      if (tiktok != null) 'tiktok': tiktok,
+      'website': ?website,
+      'instagram': ?instagram,
+      'facebook': ?facebook,
+      'tiktok': ?tiktok,
     };
 
     final row =
@@ -118,11 +118,11 @@ class PlaceRepository {
     final data = <String, dynamic>{
       'updated_at': DateTime.now().toIso8601String(),
       if (type != null) 'type': type.value,
-      if (name != null) 'name': name,
-      if (description != null) 'description': description,
-      if (address != null) 'address': address,
-      if (phone != null) 'phone': phone,
-      if (imageUrl != null) 'image_url': imageUrl,
+      'name': ?name,
+      'description': ?description,
+      'address': ?address,
+      'phone': ?phone,
+      'image_url': ?imageUrl,
       if (clearEventDate) 'event_date': null,
       if (!clearEventDate && eventDate != null)
         'event_date': eventDate.toIso8601String(),

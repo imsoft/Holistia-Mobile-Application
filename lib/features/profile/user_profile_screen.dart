@@ -238,7 +238,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 8)),
                       _posts.isEmpty
-                          ? SliverFillRemaining(
+                          ? const SliverFillRemaining(
                               hasScrollBody: false,
                               child: EmptyState(
                                 icon: Icons.article_outlined,

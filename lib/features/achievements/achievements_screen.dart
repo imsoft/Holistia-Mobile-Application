@@ -212,7 +212,7 @@ class _LevelsTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final current = ZenitLevel.fromBalance(balance);
-    final levels = ZenitLevel.values;
+    const levels = ZenitLevel.values;
 
     return Card(
       shape: RoundedRectangleBorder(

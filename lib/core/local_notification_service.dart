@@ -24,9 +24,7 @@ class LocalNotificationService {
 
       const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
       const iosSettings = DarwinInitializationSettings(
-        requestAlertPermission: true,
         requestBadgePermission: true,
-        requestSoundPermission: true,
       );
       const initSettings = InitializationSettings(
         android: androidSettings,
@@ -134,7 +132,6 @@ class LocalNotificationService {
           channelDescription: 'Notificaciones cuando alguien te sigue, comenta o da zenit',
           importance: Importance.high,
           priority: Priority.high,
-          showWhen: true,
         ),
         iOS: DarwinNotificationDetails(
           presentAlert: true,

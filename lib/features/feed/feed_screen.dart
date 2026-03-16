@@ -278,7 +278,6 @@ class _FeedScreenState extends State<FeedScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: Align(
-            alignment: Alignment.center,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: SegmentedButton<_FeedTab>(
@@ -477,7 +476,7 @@ class _FeedPostCard extends StatelessWidget {
               ),
               if (post.imageUrls.isNotEmpty) ...[
                 const SizedBox(height: 12),
-                ImageCarousel(imageUrls: post.imageUrls, height: 200),
+                ImageCarousel(imageUrls: post.imageUrls),
               ],
               if (post.body != null && post.body!.isNotEmpty) ...[
                 const SizedBox(height: 12),
@@ -601,7 +600,6 @@ class _AuthorInfo extends StatelessWidget {
         UserAvatar(name: author, avatarUrl: post.userAvatarUrl),
         const SizedBox(width: 12),
         Flexible(
-          fit: FlexFit.loose,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -628,7 +626,6 @@ class _AuthorInfo extends StatelessWidget {
                     const SizedBox(width: 4),
                   ],
                   Flexible(
-                    fit: FlexFit.loose,
                     child: Text(
                       post.challengeName ?? 'Reto',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(

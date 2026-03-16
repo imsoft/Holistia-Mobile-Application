@@ -204,7 +204,6 @@ class _RequestCard extends StatelessWidget {
                 UserAvatar(
                   name: profile?.displayName ?? '?',
                   avatarUrl: profile?.avatarUrl,
-                  radius: 20,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -354,7 +353,6 @@ class _UsersTabState extends State<_UsersTab>
             leading: UserAvatar(
               name: u.displayName ?? u.username ?? '?',
               avatarUrl: u.avatarUrl,
-              radius: 20,
             ),
             title: Text(u.displayName ?? u.username ?? 'Usuario'),
             subtitle: u.username != null

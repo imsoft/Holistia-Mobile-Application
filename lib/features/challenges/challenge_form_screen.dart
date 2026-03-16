@@ -342,7 +342,6 @@ class _ChallengeFormScreenState extends State<ChallengeFormScreen> {
                       crossAxisSpacing: spacing,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 1,
                       children: allItems,
                     );
                   },
@@ -394,7 +393,7 @@ class _ChallengeFormScreenState extends State<ChallengeFormScreen> {
                   ),
                 ] else ...[
                   DropdownButtonFormField<ChallengeType>(
-                    value: _type,
+                    initialValue: _type,
                     isExpanded: true,
                     decoration: InputDecoration(
                       labelText: 'Tipo de reto',
@@ -432,7 +431,7 @@ class _ChallengeFormScreenState extends State<ChallengeFormScreen> {
                 if (_type == ChallengeType.countTimes) ...[
                   const SizedBox(height: 16),
                   DropdownButtonFormField<ChallengeFrequency>(
-                    value: _frequency,
+                    initialValue: _frequency,
                     isExpanded: true,
                     decoration: InputDecoration(
                       labelText: 'Periodo',
@@ -449,7 +448,7 @@ class _ChallengeFormScreenState extends State<ChallengeFormScreen> {
                 ],
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: _selectedUnit,
+                  initialValue: _selectedUnit,
                   isExpanded: true,
                   decoration: InputDecoration(
                     labelText: 'Unidad',
@@ -836,7 +835,6 @@ class _ChallengeFormScreenState extends State<ChallengeFormScreen> {
                               leading: UserAvatar(
                                 avatarUrl: profile.avatarUrl,
                                 name: profile.displayName ?? profile.username ?? '?',
-                                radius: 20,
                               ),
                               title: Text(profile.displayName ?? 'Usuario'),
                               subtitle: profile.username != null

@@ -131,8 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
     await LocalNotificationService().scheduleDailyReminder(
       hour: hour,
       minute: minute,
-      title: '¡No olvides registrar tu reto!',
-      body: 'Es momento de registrar tu progreso diario',
     );
   }
 

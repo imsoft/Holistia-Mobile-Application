@@ -348,7 +348,6 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         progress.summary,
@@ -384,7 +383,6 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
                         children: [
                           Expanded(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(Icons.calendar_today, size: 16, color: theme?.mutedForeground),
                                 const SizedBox(height: 4),
@@ -406,7 +404,6 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
                           if (c.endDate != null) ...[
                             Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Icon(Icons.event, size: 16, color: theme?.mutedForeground),
                                   const SizedBox(height: 4),
@@ -538,7 +535,6 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
                     leading: UserAvatar(
                       name: entry.displayName,
                       avatarUrl: entry.avatarUrl,
-                      radius: 20,
                     ),
                     title: Text(entry.displayName),
                     trailing: Row(
@@ -682,7 +678,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
       final weekday = now.weekday;
       start = DateTime(now.year, now.month, now.day - (weekday - 1));
     } else {
-      start = DateTime(now.year, now.month, 1);
+      start = DateTime(now.year, now.month);
     }
     return _checkIns.where((c) => c.date.isAfter(start.subtract(const Duration(days: 1)))).length;
   }
@@ -1125,7 +1121,7 @@ class _ImageThumbnail extends StatelessWidget {
           child: GestureDetector(
             onTap: onRemove,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black54,
                 shape: BoxShape.circle,
               ),
@@ -1187,7 +1183,6 @@ class _AddImageButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(theme?.radiusMd ?? 8),
           border: Border.all(
             color: theme?.border ?? Colors.grey.shade300,
-            style: BorderStyle.solid,
           ),
         ),
         child: Icon(

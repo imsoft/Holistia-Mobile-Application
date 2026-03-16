@@ -341,7 +341,6 @@ class _ReactionChipState extends State<_ReactionChip>
       vsync: this,
       duration: const Duration(milliseconds: 150),
       lowerBound: 0.85,
-      upperBound: 1.0,
       value: 1.0,
     );
     _scale = _ctrl;
@@ -385,7 +384,6 @@ class _ReactionChipState extends State<_ReactionChip>
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   widget.emoji,

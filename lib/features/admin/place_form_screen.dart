@@ -250,7 +250,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
 
                     // ── Tipo ──────────────────────────────────────────────
                     DropdownButtonFormField<PlaceType>(
-                      value: _type,
+                      initialValue: _type,
                       decoration: const InputDecoration(
                         labelText: 'Tipo *',
                         border: OutlineInputBorder(),
@@ -352,7 +352,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
 
                     // ── Redes sociales ────────────────────────────────────
                     const SizedBox(height: 24),
-                    _SectionHeader(
+                    const _SectionHeader(
                       icon: Icons.link,
                       label: 'Redes sociales y contacto',
                     ),

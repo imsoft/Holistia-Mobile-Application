@@ -533,19 +533,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               onTap: () => context.push('/admin'),
                             ),
                           if (_role.isExpert)
-                            ListTile(
-                              leading: const Icon(Icons.workspace_premium, color: Colors.amber),
-                              title: const Text('Cuenta Experto'),
-                              subtitle: const Text('Tu solicitud fue aprobada'),
-                              trailing: const ExpertBadge(label: 'Experto'),
+                            const ListTile(
+                              leading: Icon(Icons.workspace_premium, color: Colors.amber),
+                              title: Text('Cuenta Experto'),
+                              subtitle: Text('Tu solicitud fue aprobada'),
+                              trailing: ExpertBadge(label: 'Experto'),
                             ),
                           if (_role == UserRole.user) ...[
                             if (_expertRequest?.status == ExpertRequestStatus.pending)
-                              ListTile(
-                                leading: const Icon(Icons.hourglass_top_outlined),
-                                title: const Text('Solicitud de Experto'),
-                                subtitle: const Text('En revisión — te avisaremos pronto'),
-                                trailing: const Icon(Icons.pending_outlined),
+                              const ListTile(
+                                leading: Icon(Icons.hourglass_top_outlined),
+                                title: Text('Solicitud de Experto'),
+                                subtitle: Text('En revisión — te avisaremos pronto'),
+                                trailing: Icon(Icons.pending_outlined),
                               )
                             else
                               ListTile(
@@ -632,8 +632,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 await LocalNotificationService().scheduleDailyReminder(
                                   hour: _reminderHour,
                                   minute: _reminderMinute,
-                                  title: '¡No olvides registrar tu reto!',
-                                  body: 'Es momento de registrar tu progreso diario',
                                 );
                               } else {
                                 await LocalNotificationService().cancelDailyReminder();
@@ -672,8 +670,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   await LocalNotificationService().scheduleDailyReminder(
                                     hour: picked.hour,
                                     minute: picked.minute,
-                                    title: '¡No olvides registrar tu reto!',
-                                    body: 'Es momento de registrar tu progreso diario',
                                   );
                                 }
                               },
@@ -934,7 +930,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 TextField(
                   controller: controller,
                   autocorrect: false,
-                  textCapitalization: TextCapitalization.none,
                   decoration: InputDecoration(
                     labelText: '@username',
                     hintText: 'ej. maria_holistia',

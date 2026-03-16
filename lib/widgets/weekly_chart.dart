@@ -31,7 +31,6 @@ class WeeklyChart extends StatelessWidget {
           maxY: displayMax * 1.2,
           minY: 0,
           gridData: FlGridData(
-            show: true,
             drawVerticalLine: false,
             horizontalInterval: displayMax > 1 ? displayMax / 3 : 1,
             getDrawingHorizontalLine: (_) => FlLine(
@@ -41,9 +40,9 @@ class WeeklyChart extends StatelessWidget {
           ),
           borderData: FlBorderData(show: false),
           titlesData: FlTitlesData(
-            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            leftTitles: const AxisTitles(),
+            rightTitles: const AxisTitles(),
+            topTitles: const AxisTitles(),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,

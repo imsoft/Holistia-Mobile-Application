@@ -94,7 +94,7 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No se pudo actualizar la reacción')),
+          const SnackBar(content: Text('No se pudo actualizar la reacción')),
         );
       }
     }
@@ -142,11 +142,9 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                               UserAvatar(
                                 name: post.displayName ?? '?',
                                 avatarUrl: post.userAvatarUrl,
-                                radius: 20,
                               ),
                               const SizedBox(width: 12),
                               Flexible(
-                                fit: FlexFit.loose,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
@@ -170,7 +168,6 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                                           const SizedBox(width: 4),
                                         ],
                                         Flexible(
-                                          fit: FlexFit.loose,
                                           child: Text(
                                             post.challengeName ?? 'Reto',
                                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -206,7 +203,6 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                         isActive: false,
                         colorScheme: colorScheme,
                         theme: theme,
-                        onTap: null,
                       ),
                       const Spacer(),
                       IconButton(
@@ -258,7 +254,6 @@ class _PostDetailSheetState extends State<PostDetailSheet> {
                               borderRadius: BorderRadius.circular(theme?.radiusMd ?? 8),
                             ),
                           ),
-                          maxLines: 1,
                           onSubmitted: (_) => _sendComment(),
                         ),
                       ),

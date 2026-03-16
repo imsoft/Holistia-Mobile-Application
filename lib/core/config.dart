@@ -5,10 +5,10 @@ class Config {
   Config._();
 
   static const String supabaseUrl =
-      String.fromEnvironment('SUPABASE_URL', defaultValue: '');
+      String.fromEnvironment('SUPABASE_URL');
 
   static const String supabaseAnonKey =
-      String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: '');
+      String.fromEnvironment('SUPABASE_ANON_KEY');
 
   static bool get isSupabaseConfigured =>
       supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty;
