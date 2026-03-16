@@ -1,5 +1,20 @@
 # Cómo subir una nueva actualización a la App Store
 
+## Instalar y ejecutar desde Xcode (en tu iPhone o simulador)
+
+1. Abre el proyecto iOS: **`open ios/Runner.xcworkspace`** (usa el `.xcworkspace`, no el `.xcodeproj`).
+2. Arriba, elige **tu iPhone** o un simulador como destino.
+3. Pulsa **Run** (▶) o **Product → Run**.
+
+La app se instalará y abrirá en el dispositivo.  
+**Importante:** Si al abrirla ves "Configura Supabase", es porque Xcode no está pasando la URL y la clave. En ese caso:
+- **Opción fácil:** ejecuta desde la terminal con **`./run_ios.sh`** (ya lleva Supabase configurado), o
+- En Xcode: **Product → Scheme → Edit Scheme… → Run → Arguments** y en "Environment Variables" añade las variables que use tu proyecto para Supabase (o configura `DART_DEFINES` si tu build las usa así).
+
+Para compilar en **release** y subir a la App Store, sigue los pasos de abajo.
+
+---
+
 ## 1. Subir la versión (build number)
 
 Para que App Store Connect acepte un nuevo build, el **build number** debe ser mayor que el anterior.

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -13,6 +16,28 @@ import 'widgets/theme_mode_scope.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Evitar que errores no capturados cierren la app al abrir desde el icono (cold start).
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) {
+      runApp(_ErrorApp('${details.exception}\n\n${details.stack}'));
+    }
+    return;
+  };
+  unawaited(
+    runZonedGuarded(() async {
+      try {
+        await _runApp();
+      } catch (error, stack) {
+        runApp(_ErrorApp('$error\n\n$stack'));
+      }
+    }, (error, stack) {
+      runApp(_ErrorApp('$error\n\n$stack'));
+    }),
+  );
+}
+
+Future<void> _runApp() async {
   Object? supabaseInitError;
   if (Config.isSupabaseConfigured) {
     try {
@@ -45,6 +70,46 @@ Future<void> main() async {
   await themeController.load();
 
   runApp(MainApp(authState: authState, themeController: themeController));
+}
+
+/// Pantalla que muestra un error para que la app no se cierre en silencio (p. ej. al reabrir).
+class _ErrorApp extends StatelessWidget {
+  const _ErrorApp(this.message);
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: appThemeLight,
+      darkTheme: appThemeDark,
+      home: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                const SizedBox(height: 16),
+                Text(
+                  'Algo salió mal al iniciar',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 12),
+                SelectableText(
+                  message,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _ConfigureSupabaseApp extends StatelessWidget {
