@@ -46,7 +46,7 @@ class PushNotificationService {
       ..subscribe();
 
     if (kDebugMode) {
-      print('PushNotificationService: Escuchando notificaciones para usuario $userId');
+      print('PushNotificationService: Listening for user ${userId.substring(0, 8)}...');
     }
   }
 
@@ -77,7 +77,7 @@ class PushNotificationService {
       );
 
       if (kDebugMode) {
-        print('PushNotificationService: Nueva notificación recibida: ${notification.title}');
+        print('PushNotificationService: Nueva notificación recibida');
       }
     } catch (e) {
       if (kDebugMode) {

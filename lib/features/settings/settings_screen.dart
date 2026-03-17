@@ -49,6 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int _zenitBalance = 0;
   bool _loading = true;
   bool _uploadingAvatar = false;
+  bool _deletingAccount = false;
   String? _error;
   bool _reminderEnabled = true;
   int _reminderHour = 9;
@@ -267,6 +268,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _deleteAccount() async {
+    if (_deletingAccount) return;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -292,6 +294,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
     if (confirmed != true || !mounted) return;
 
+    setState(() => _deletingAccount = true);
     try {
       // Llama a la función delete_user() en Supabase (ver docs/delete_user.sql)
       await Supabase.instance.client.rpc(AppConstants.deleteUserRpc);
@@ -299,6 +302,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) GoRouter.of(context).go('/login');
     } catch (e) {
       if (mounted) {
+        setState(() => _deletingAccount = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(userFacingErrorMessage(e))),
         );
@@ -751,7 +755,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           style: TextStyle(color: Theme.of(context).colorScheme.error),
                         ),
                         subtitle: const Text('Elimina tu cuenta y todos tus datos permanentemente'),
-                        onTap: _deleteAccount,
+                        onTap: _deletingAccount ? null : _deleteAccount,
                       ),
                     ),
                     const SizedBox(height: 32),

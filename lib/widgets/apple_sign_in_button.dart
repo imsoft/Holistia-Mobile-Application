@@ -50,6 +50,8 @@ class AppleSignInButton extends StatelessWidget {
       height: 50,
       child: SignInWithAppleButton(
         onPressed: onPressed ?? () {},
+        text: 'Continuar con Apple',
+        height: 35,
         borderRadius: BorderRadius.circular(theme?.radiusMd ?? 8),
         style: isDark
             ? SignInWithAppleButtonStyle.black

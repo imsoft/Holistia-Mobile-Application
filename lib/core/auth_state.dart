@@ -38,7 +38,12 @@ class HolistiaAuthState extends ChangeNotifier {
   Future<void> checkInitialUriForPasswordReset() async {
     try {
       final uri = await AppLinks().getInitialLink();
-      if (uri != null && uri.toString().contains('reset-password')) {
+      if (uri == null) return;
+      final isValidScheme = uri.scheme == 'io.holistia.mobile';
+      final isResetPath = uri.host == 'reset-password';
+      final hasToken = uri.fragment.contains('access_token') ||
+          uri.queryParameters.containsKey('access_token');
+      if (isValidScheme && isResetPath && hasToken) {
         _pendingPasswordReset = true;
         notifyListeners();
       }

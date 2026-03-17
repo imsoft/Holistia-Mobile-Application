@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/url_validator.dart';
 import '../../core/user_facing_errors.dart';
 import '../../models/place.dart';
 import '../../repositories/place_repository.dart';
@@ -58,10 +59,11 @@ class _ProfessionalsScreenState extends State<ProfessionalsScreen> {
   }
 
   Future<void> _launch(String rawUrl) async {
+    if (!UrlValidator.isSafeToLaunch(rawUrl)) return;
     final url = rawUrl.startsWith('http') ? rawUrl : 'https://$rawUrl';
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      launchUrl(uri, mode: LaunchMode.externalApplication);
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 

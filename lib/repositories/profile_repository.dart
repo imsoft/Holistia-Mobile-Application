@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/image_validator.dart';
 import '../models/profile.dart';
 
 class ProfileRepository {
@@ -34,10 +35,11 @@ class ProfileRepository {
     final uid = _userId;
     if (uid == null) return null;
 
-    final file = File(localPath);
-    if (!await file.exists()) return null;
+    final validationError = await ImageValidator.validate(localPath);
+    if (validationError != null) throw Exception(validationError);
 
-    final ext = localPath.split('.').last;
+    final file = File(localPath);
+    final ext = localPath.split('.').last.toLowerCase();
     final path = '$uid/${DateTime.now().millisecondsSinceEpoch}.$ext';
 
     await _client.storage.from('avatars').upload(

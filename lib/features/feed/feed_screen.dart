@@ -44,6 +44,7 @@ class _FeedScreenState extends State<FeedScreen> {
   Map<String, Map<String, int>> _reactionCounts = {};
   Map<String, Set<String>> _userReactions = {};
   Map<String, List<AppProfile>> _challengeInvitees = {};
+  final Set<String> _pendingReactions = {};
   ChallengeCategory? _selectedCategory;
   String? _myUserId;
   _FeedTab _selectedTab = _FeedTab.descubrir;
@@ -192,6 +193,9 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   Future<void> _toggleReaction(String postId, String emoji) async {
+    final key = '$postId:$emoji';
+    if (_pendingReactions.contains(key)) return;
+    _pendingReactions.add(key);
     final prev = Map<String, Map<String, int>>.from(_reactionCounts);
     final prevUser = Map<String, Set<String>>.from(_userReactions);
     setState(() {
@@ -217,6 +221,8 @@ class _FeedScreenState extends State<FeedScreen> {
           _userReactions = prevUser;
         });
       }
+    } finally {
+      _pendingReactions.remove(key);
     }
   }
 

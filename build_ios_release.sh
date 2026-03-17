@@ -25,12 +25,23 @@ fi
 echo -e "${GREEN}✓ Dispositivo iOS detectado${NC}"
 echo ""
 
+# Cargar variables del .env
+if [ -f .env ]; then
+  set -a; source .env; set +a
+fi
+
+if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+  echo -e "${YELLOW}❌ Error: SUPABASE_URL y SUPABASE_ANON_KEY deben estar en .env${NC}"
+  echo "   Copia .env.example a .env y rellena los valores."
+  exit 1
+fi
+
 # Compilar en modo Release
 echo -e "${BLUE}Compilando...${NC}"
 flutter build ios --release \
   --no-tree-shake-icons \
-  --dart-define=SUPABASE_URL=https://imxzapeoxvdfheffxhwj.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlteHphcGVveHZkZmhlZmZ4aHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNDI5NjgsImV4cCI6MjA4NzcxODk2OH0.-DZpeRdGJxujjLPtF9PaeiEUCPR8njJe6oysubzFQ0k
+  --dart-define=SUPABASE_URL="$SUPABASE_URL" \
+  --dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
 
 if [ $? -eq 0 ]; then
     echo ""

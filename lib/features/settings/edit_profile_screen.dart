@@ -86,17 +86,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _save() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    final username = _usernameController.text.trim().toLowerCase();
-    final uid = Supabase.instance.client.auth.currentUser?.id;
-    final available = await _profileRepo.isUsernameAvailable(username, excludeUserId: uid);
-    if (!available && mounted) {
-      setState(() => _error = 'Ese nombre de usuario ya está en uso.');
-      return;
-    }
+    if (_saving) return;
     setState(() {
       _error = null;
       _saving = true;
     });
+    final username = _usernameController.text.trim().toLowerCase();
+    final uid = Supabase.instance.client.auth.currentUser?.id;
+    final available = await _profileRepo.isUsernameAvailable(username, excludeUserId: uid);
+    if (!available && mounted) {
+      setState(() {
+        _error = 'Ese nombre de usuario ya está en uso.';
+        _saving = false;
+      });
+      return;
+    }
     try {
       await _profileRepo.updateProfile(
         displayName: _nameController.text.trim(),

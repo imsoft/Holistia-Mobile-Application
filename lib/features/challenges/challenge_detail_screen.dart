@@ -47,6 +47,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
   List<DayStat> _weeklyStats = [];
   List<LeaderboardEntry> _leaderboard = [];
   bool _loading = true;
+  bool _addingCheckIn = false;
   String? _error;
 
   @override
@@ -87,6 +88,16 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
   }
 
   Future<void> _addCheckIn() async {
+    if (_addingCheckIn) return;
+    setState(() => _addingCheckIn = true);
+    try {
+      await _doAddCheckIn();
+    } finally {
+      if (mounted) setState(() => _addingCheckIn = false);
+    }
+  }
+
+  Future<void> _doAddCheckIn() async {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final existing = await _checkInRepo.getByChallengeAndDate(widget.challengeId, today);
@@ -444,7 +455,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen> {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton.icon(
-                  onPressed: canCheckInToday ? _addCheckIn : null,
+                  onPressed: canCheckInToday && !_addingCheckIn ? _addCheckIn : null,
                   icon: const Icon(Icons.add_circle_outline),
                   label: Text(canCheckInToday ? 'Registrar avance hoy' : 'Ya registraste hoy'),
                   style: FilledButton.styleFrom(

@@ -101,8 +101,8 @@ class AppleAuthService {
         case AuthorizationErrorCode.notHandled:
           return const AppleSignInCancelled();
         case AuthorizationErrorCode.failed:
-          return AppleSignInFailure(
-            e.message,
+          return const AppleSignInFailure(
+            'No se pudo completar el inicio de sesión con Apple. Intenta de nuevo.',
           );
         case AuthorizationErrorCode.notInteractive:
           return const AppleSignInFailure(
@@ -113,18 +113,12 @@ class AppleAuthService {
       return const AppleSignInFailure(
         'Sign in with Apple no está disponible en este dispositivo.',
       );
-    } on SignInWithAppleException catch (e) {
-      return AppleSignInFailure(
-        e is SignInWithAppleAuthorizationException
-            ? e.message
-            : 'Error con Apple. Intenta de nuevo.',
-      );
-    } on AuthException catch (e) {
-      return AppleSignInFailure(e.message);
-    } catch (e) {
-      return AppleSignInFailure(
-        'Error al iniciar sesión con Apple: $e',
-      );
+    } on SignInWithAppleException catch (_) {
+      return const AppleSignInFailure('Error con Apple. Intenta de nuevo.');
+    } on AuthException catch (_) {
+      return const AppleSignInFailure('No se pudo iniciar sesión. Intenta de nuevo.');
+    } catch (_) {
+      return const AppleSignInFailure('Error al iniciar sesión con Apple. Intenta de nuevo.');
     }
   }
 

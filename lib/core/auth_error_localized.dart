@@ -26,5 +26,5 @@ String localizedAuthMessage(AuthException e) {
     return 'No tienes permiso para realizar esta acción.';
   }
 
-  return e.message.isNotEmpty ? e.message : 'Ocurrió un error. Intenta de nuevo.';
+  return 'Ocurrió un error. Intenta de nuevo.';
 }
