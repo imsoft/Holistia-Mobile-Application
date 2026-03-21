@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app_router.dart';
 import 'core/auth_state.dart' as holistia_auth;
+import 'core/app_tracking_transparency_helper.dart';
 import 'core/config.dart';
 import 'core/local_notification_service.dart';
 import 'core/supabase_init.dart';
@@ -38,6 +39,8 @@ Future<void> main() async {
 }
 
 Future<void> _runApp() async {
+  await requestAppTrackingTransparencyIfNeeded();
+
   Object? supabaseInitError;
   if (Config.isSupabaseConfigured) {
     try {

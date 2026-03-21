@@ -50,7 +50,7 @@ Holistia incluye **Sign in with Apple** en iOS para cumplir con la Guideline 4.8
 
 ## 4. Comportamiento en la app
 
-- **Login / Registro**: En iOS se muestra el botón oficial “Sign in with Apple” debajo de “Continuar con Google”. Email/contraseña y Google siguen igual.
+- **Login / Registro**: En iOS se muestra primero el botón oficial “Sign in with Apple” y debajo “Continuar con Google” (prominencia equivalente a la Guideline 4.8). Email/contraseña siguen igual.
 - **Primera vez con Apple**: Se crea el usuario en Supabase Auth y, si tu proyecto tiene trigger en `auth.users`, la fila en `profiles`. El nombre se guarda en `user_metadata` (full_name, given_name, family_name) cuando Apple lo envía (solo en el primer inicio de sesión).
 - **Cancelación**: Si el usuario cancela en la pantalla de Apple, no se muestra error; el loading se quita y se queda en la misma pantalla.
 

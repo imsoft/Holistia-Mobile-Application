@@ -351,17 +351,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                GoogleSignInButton(
-                  onPressed: _signInWithGoogle,
-                  loading: _loadingGoogle,
-                ),
                 if (AppleSignInButton.isSupported) ...[
-                  const SizedBox(height: 16),
                   AppleSignInButton(
                     onPressed: _signInWithApple,
                     loading: _loadingApple,
                   ),
+                  const SizedBox(height: 16),
                 ],
+                GoogleSignInButton(
+                  onPressed: _signInWithGoogle,
+                  loading: _loadingGoogle,
+                ),
                 const SizedBox(height: 24),
                 FilledButton(
                   onPressed: _loading

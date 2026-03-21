@@ -247,17 +247,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                GoogleSignInButton(
-                  onPressed: _signInWithGoogle,
-                  loading: _loadingGoogle,
-                ),
+                // Guideline 4.8: Sign in with Apple con prominencia equivalente;
+                // en iOS va antes que Google (opción nativa recomendada).
                 if (AppleSignInButton.isSupported) ...[
-                  const SizedBox(height: 16),
                   AppleSignInButton(
                     onPressed: _signInWithApple,
                     loading: _loadingApple,
                   ),
+                  const SizedBox(height: 16),
                 ],
+                GoogleSignInButton(
+                  onPressed: _signInWithGoogle,
+                  loading: _loadingGoogle,
+                ),
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () => context.push('/register'),
