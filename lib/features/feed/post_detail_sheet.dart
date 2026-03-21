@@ -283,7 +283,6 @@ class _ActionButton extends StatelessWidget {
     required this.isActive,
     required this.colorScheme,
     required this.theme,
-    this.onTap,
   });
 
   final IconData icon;
@@ -291,25 +290,20 @@ class _ActionButton extends StatelessWidget {
   final bool isActive;
   final ColorScheme colorScheme;
   final AppThemeExtension? theme;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 22, color: isActive ? colorScheme.primary : theme?.mutedForeground),
-            const SizedBox(width: 6),
-            Text(label, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: isActive ? colorScheme.primary : theme?.mutedForeground,
-                )),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 22, color: isActive ? colorScheme.primary : theme?.mutedForeground),
+          const SizedBox(width: 6),
+          Text(label, style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: isActive ? colorScheme.primary : theme?.mutedForeground,
+              )),
+        ],
       ),
     );
   }
