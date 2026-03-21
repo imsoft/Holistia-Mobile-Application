@@ -108,6 +108,15 @@ class AppleAuthService {
           return const AppleSignInFailure(
             'No se pudo mostrar la pantalla de Apple. Intenta de nuevo.',
           );
+        case AuthorizationErrorCode.credentialImport:
+        case AuthorizationErrorCode.credentialExport:
+          return const AppleSignInFailure(
+            'No se pudo usar el inicio de sesión con Apple. Intenta de nuevo.',
+          );
+        case AuthorizationErrorCode.matchedExcludedCredential:
+          return const AppleSignInFailure(
+            'Inicio de sesión con Apple no disponible. Intenta de nuevo.',
+          );
       }
     } on SignInWithAppleNotSupportedException catch (_) {
       return const AppleSignInFailure(
