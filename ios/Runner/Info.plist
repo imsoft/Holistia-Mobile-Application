@@ -85,7 +85,5 @@
 	<string>Holistia necesita acceso a tu galería para que puedas elegir una foto de perfil.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Holistia puede guardar capturas de pantalla de tus retos en tu galería.</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>Holistia solicita permiso para personalizar la experiencia y medir el uso de la app de forma agregada. Puedes rechazarlo y seguir usando la app con normalidad.</string>
 </dict>
 </plist>
